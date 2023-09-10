@@ -1,3 +1,4 @@
+import { GlobalProvider } from '@/context/GlobalContext'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Josefin_Sans } from 'next/font/google'
@@ -17,7 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${josefinSans.variable} font-sans flex flex-row justify-center items-center h-screen`}>{children}</body>
+      <body className={`${josefinSans.variable} font-sans flex flex-row justify-center items-center h-screen bg-L_VeryLightGray dark:bg-D_VeryDarkBlue`}>
+        <GlobalProvider>
+          {children}
+        </GlobalProvider>
+      </body>
     </html>
   )
 }
