@@ -2,7 +2,7 @@
 import { createContext, useContext, useState } from "react";
 
 type Theme = 'light' | 'dark';
-type Filter = 'all' | 'active' | 'completed';
+export type Filter = 'all' | 'active' | 'completed';
 
 type Todo = {
     id: string;

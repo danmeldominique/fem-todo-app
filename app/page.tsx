@@ -77,24 +77,27 @@ const SetCompletedVisible = () => {
 }
 
   const onDragEnd = (result:DropResult) => {
-    const {destination, source, draggableId} = result;
+    console.log(result)
+    const {destination, source} = result;
     // Check if user dropped item outside of droppable area
     if(!destination) return;
     // Check if user dropped item in same place
     if(destination.index === source.index && destination.droppableId === source.droppableId) return;
-    console.log(result)
-
+    // Reorder items
     const newTodos = [...todos];
+    console.log(newTodos)
     const [reorderedItem] = newTodos.splice(source.index, 1);
+    console.log(reorderedItem)
     newTodos.splice(destination.index, 0, reorderedItem);
+    console.log(newTodos)
     setTodos(newTodos);
 
   }
   return (
     <main className="w-full h-full">
       <div className="h-full flex flex-col">
-        <div className="bg-mobile-light dark:bg-mobile-dark bg-no-repeat bg-cover h-72 w-full bg-center absolute" />
-        <div className="flex flex-col z-[999] w-11/12 mx-auto h-full">
+        <div className="bg-mobile-light dark:bg-mobile-dark bg-no-repeat bg-cover h-72 w-full bg-center absolute z-0" />
+        <div className="flex flex-col z-[999] w-11/12 md:w-[40rem] mx-auto h-full">
           <div className="flex flex-row justify-between mt-12">
             {/* Header and theme switch */}
             <h1 className="tracking-[0.7rem] text-4xl font-bold text-white">
@@ -130,34 +133,38 @@ const SetCompletedVisible = () => {
                             <input type="checkbox" className="w-8 h-8 mr-4 rounded-full focus:outline-none focus:ring-0 checked:bg-gradient-to-r checked:from-CheckFrom checked:to-CheckTo " checked={todo.completed} onChange={() => CompleteTodo(todo.id)} />
                             {todo.completed && <CheckIcon className='h-6 w-6 absolute left-9 text-white pointer-events-none' /> }
                             {todo.title}
-                            <TrashIcon className="w-6 h-6 absolute right-8 text-gray-400 hover:text-gray-700 cursor-pointer" onClick={() => DeleteTodo (todo.id)} />
+                            <TrashIcon className="w-6 h-6 absolute right-8 text-gray-400 hover:text-red-500 cursor-pointer" onClick={() => DeleteTodo (todo.id)} />
                           </li>
                         )
                       }
                     </Draggable>
                   ))}
                   {provided.placeholder}
-                  <li className="flex flex-row justify-between py-3 dark:bg-D_VeryDarkDesaturatedBlue">
-            {
-              todos.length > 0 ? <p className="text-gray-400 text-sm px-8 py-4">{todos.length} items left {`(${todos.filter(x => x.visible == false).length} hidden)`}</p> : <p className="text-gray-400 text-sm px-8 py-4">No items left</p>
-            }
-            <button className="text-gray-400 text-sm px-8 py-4" onClick={() => RemoveCompleted()}>Clear Completed</button>
-          </li>
+                  <li className="flex flex-row justify-between py-3 dark:bg-D_VeryDarkDesaturatedBlue sm:hidden">
+                    {
+                      todos.length > 0 ? <p className="text-gray-400 text-sm px-8 py-4">{todos.length} items left</p> : <p className="text-gray-400 text-sm px-8 py-4">No items left</p>
+                    }
+                    <button className="text-gray-400 text-sm px-8 py-4" onClick={() => RemoveCompleted()}>Clear Completed</button>
+                  </li>
                 </ul>
               )
             }
             </Droppable>
           </DragDropContext>
 
-          <div className="flex flex-row my-8 rounded-[0.6rem] bg-white shadow-md dark:bg-D_VeryDarkDesaturatedBlue">
-              <div className="py-6 space-x-8 w-fit mx-auto">
+          <div className="flex flex-row my-8 rounded-[0.6rem] bg-white shadow-md dark:bg-D_VeryDarkDesaturatedBlue justify-between items-center">
+              {
+                todos.length > 0 ? <p className="text-gray-400 text-sm px-8 py-4 hidden md:block">{todos.length} items left</p> : <p className="text-gray-400 text-sm px-8 py-4">No items left</p>
+              }
+              <div className="py-6 space-x-8 w-fit mx-auto text-sm">
                 <button className={`${filter === 'all' ? 'text-blue-500' : 'text-black dark:text-white'}`} onClick={() => SetAllVisible()}>All</button>
                 <button className={`${filter === 'active' ? 'text-blue-500' : 'text-black dark:text-white'}`}  onClick={() => SetActiveVisible()}>Active</button>
                 <button className={`${filter === 'completed' ? 'text-blue-500' : 'text-black dark:text-white'}`}  onClick={() => SetCompletedVisible()}>Completed</button>
               </div>
+              <button className="text-gray-400 text-sm px-8 py-4 hidden md:block" onClick={() => RemoveCompleted()}>Clear Completed</button>
           </div>
           <div className="flex flex-row items-end justify-center grow">
-            <p className="text-center mb-10">Drag and drop to reorder list</p>
+            <p className="text-center mb-10 dark:text-white">Drag and drop to reorder list</p>
           </div>
         </div>
       </div>
