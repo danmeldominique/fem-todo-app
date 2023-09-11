@@ -19,7 +19,7 @@ type GlobalContextType = {
     todos: Todo[];
     setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
     filter?: Filter;
-    setFilter?: React.Dispatch<React.SetStateAction<Filter>>;
+    setFilter: React.Dispatch<React.SetStateAction<Filter>>;
 }
 
 const GlobalContext = createContext<GlobalContextType|null>(null);
